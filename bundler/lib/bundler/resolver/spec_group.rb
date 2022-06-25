@@ -4,7 +4,7 @@ module Bundler
   class Resolver
     class SpecGroup
       attr_accessor :name, :version, :source
-      attr_accessor :activated_platforms
+      attr_accessor :activated_platforms, :force_ruby_platform
 
       def self.create_for(specs, all_platforms, specific_platform)
         specific_platform_specs = specs[specific_platform]
@@ -35,6 +35,7 @@ module Bundler
 
           specs.map do |s|
             lazy_spec = LazySpecification.new(name, version, s.platform, source)
+            lazy_spec.force_ruby_platform = force_ruby_platform
             lazy_spec.dependencies.replace s.dependencies
             lazy_spec
           end
